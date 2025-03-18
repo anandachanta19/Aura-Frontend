@@ -1,0 +1,36 @@
+.circular-gallery {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding: 10px;
+}
+
+.circular-item {
+    min-width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.circular-item:hover {
+    transform: scale(1.1);
+}
+
+.gallery-label {
+    font-size: 14px;
+}
+
+.gallery-sublabel {
+    font-size: 12px;
+    color: gray;
+}

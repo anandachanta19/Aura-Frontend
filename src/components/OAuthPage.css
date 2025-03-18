@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Fira Code", monospace;
+}
+
+.aura-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: transparent; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: black !important;
+    border: none !important;
+    outline: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.text-container {
+    margin-bottom: 20px;
+}
+
+.welcome-text {
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.aura-title {
+    color: white;
+    font-size: 7.5rem;
+    font-weight: 900;
+    font-family: "Fira Code", monospace;
+    margin: 2px 0;
+}
+
+.aura-subtitle {
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.spotify-button {
+    background-color: #1dce5e;
+    color: white;
+    padding: 18px 35px;
+    border: none !important;
+    outline: none !important;
+    border-radius: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.spotify-button:hover {
+    transform: scale(1.05);
+}
