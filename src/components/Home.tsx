@@ -20,11 +20,16 @@ const Home: React.FC = () => {
 
   const handleNavigation = async (endpoint: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/${endpoint}?session=${sessionKey}`);
-      if (response.redirected) {
-        window.location.href = response.url; // Redirect to the URL provided by the backend
+      const response = await fetch(
+        `http://localhost:8000/api/${endpoint}?session=${sessionKey}`,
+        {
+          credentials: "include",
+        },
+      );
+      const data = await response.json();
+      if (data.redirect_url) {
+        window.location.href = data.redirect_url;
       } else {
-        const data = await response.json();
         setError(data.error || "Failed to navigate.");
       }
     } catch (err) {
@@ -52,7 +57,9 @@ const Home: React.FC = () => {
         </div>
         <div className="navbar-right">
           <button onClick={() => handleNavigation("go/home")}>Home</button>
-          <button onClick={() => handleNavigation("go/profile")}>Profile</button>
+          <button onClick={() => handleNavigation("go/profile")}>
+            Profile
+          </button>
           <a href="/library">Library</a>
           <a href="/about">About</a>
         </div>

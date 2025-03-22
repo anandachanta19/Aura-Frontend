@@ -46,20 +46,6 @@ const Profile: React.FC = () => {
     fetchProfile();
   }, [sessionKey]);
 
-  const handleNavigation = async (endpoint: string) => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/${endpoint}?session=${sessionKey}`);
-      if (response.redirected) {
-        window.location.href = response.url; // Redirect to the URL provided by the backend
-      } else {
-        const data = await response.json();
-        setError(data.error || "Failed to navigate.");
-      }
-    } catch (err) {
-      setError("An error occurred while navigating.");
-    }
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error)
     return (
@@ -80,7 +66,7 @@ const Profile: React.FC = () => {
 
       <div className="header">
         <h2 className="nav-title">Profile</h2>
-        <button className="back-button" onClick={() => handleNavigation("go/home")}>
+        <button className="back-button" onClick={() => window.history.back()}>
           <h2 className="nav-title">Back</h2>
         </button>
       </div>
