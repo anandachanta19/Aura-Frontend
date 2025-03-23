@@ -60,8 +60,10 @@ const Home: React.FC = () => {
           <button onClick={() => handleNavigation("go/profile")}>
             Profile
           </button>
-          <a href="/library">Library</a>
-          <a href="/about">About</a>
+          <button onClick={() => handleNavigation("go/library")}>
+            Library
+          </button>
+          <button onClick={() => handleNavigation("go/about")}>About</button>
         </div>
       </nav>
       <div className="recommendation">

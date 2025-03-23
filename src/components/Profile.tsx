@@ -3,13 +3,19 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./Profile.css";
 
+interface Playlist {
+  id: string;
+  name: string;
+  image_url: string;
+}
+
 interface SpotifyProfile {
   display_name: string;
   email: string;
   followers: number;
   profile_picture: string | null;
   top_artists: string[];
-  playlists: string[];
+  playlists: Playlist[];
 }
 
 const Profile: React.FC = () => {
@@ -95,7 +101,7 @@ const Profile: React.FC = () => {
             <h3>PLAYLISTS</h3>
             <ul>
               {profile?.playlists.map((playlist, index) => (
-                <li key={index}>{playlist}</li>
+                <li key={index}>{playlist.name}</li>
               ))}
             </ul>
           </div>

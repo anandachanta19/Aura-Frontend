@@ -1,0 +1,163 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Fira Code", monospace;
+    color: white;
+}
+
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.library-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow-y: auto;
+}
+
+.library-container .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    background-color: transparent;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.header,
+.section {
+    position: relative;
+    z-index: 20;
+}
+
+.library-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.section {
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+    background-color: transparent;
+}
+
+.section h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.track-card,
+.playlist-card {
+    width: 200px;
+    text-align: center;
+}
+
+.image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.track-image,
+.playlist-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.play-button,
+.open-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    display: none;
+}
+
+.track-card:hover .play-button,
+.playlist-card:hover .open-button {
+    display: block;
+}
+
+.track-info {
+    margin-top: 10px;
+}
+
+.track-name,
+.playlist-name {
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    margin: 5px 0;
+}
+
+.track-artist {
+    color: white;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.loading,
+.error {
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.error a {
+    color: white;
+    text-decoration: underline;
+}

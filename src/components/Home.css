@@ -28,16 +28,6 @@ body {
     position: relative;
 }
 
-.aurora-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: fill;
-    z-index: -1;
-}
-
 .navbar {
     position: absolute;
     top: 0;
@@ -83,14 +73,14 @@ body {
     margin: 0;
     padding: 0;
     background: transparent;
-    position: absolute; 
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
 }
 
-.navbar-right button{
+.navbar-right button {
     text-decoration: none;
     border: none;
     background: none;
