@@ -43,14 +43,14 @@ html {
 
 .welcome-text {
     color: white;
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 2px;
 }
 
 .aura-title {
     color: white;
-    font-size: 7.5rem;
+    font-size: 6rem;
     font-weight: 900;
     font-family: "Fira Code", monospace;
     margin: 2px 0;
@@ -58,7 +58,7 @@ html {
 
 .aura-subtitle {
     color: white;
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 15px;
 }
@@ -70,7 +70,7 @@ html {
     border: none !important;
     outline: none !important;
     border-radius: 30px;
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
