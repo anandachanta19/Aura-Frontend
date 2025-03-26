@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { FaPlay, FaFolderOpen } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaFolderOpen, FaPlay } from "react-icons/fa";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Library.css";
 import Aurora from "./ui/Aurora/Aurora";
 
@@ -64,6 +64,22 @@ const Library: React.FC = () => {
 
     fetchLibrary();
   }, [sessionKey]);
+
+  const handleOpenPlaylist = async (playlistId: string) => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/go/playlist/", {
+        params: { playlist_id: playlistId, session: sessionKey },
+      });
+  
+      const redirectUrl = response.data.redirect_url;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      }
+    } catch (err: any) {
+      console.error("Error fetching playlist redirect URL:", err);
+      setError("Failed to redirect to the playlist.");
+    }
+  };
 
   // Always render the header
   return (
@@ -131,7 +147,7 @@ const Library: React.FC = () => {
                         className="playlist-image"
                       />
                       <div className="overlay">
-                        <button className="open-button" aria-label="Open">
+                        <button className="open-button" aria-label="Open" onClick={() => handleOpenPlaylist(playlist.id)}>
                           <FaFolderOpen />
                         </button>
                       </div>

@@ -131,6 +131,11 @@ body {
     display: block;
 }
 
+.track-card:hover .track-image,
+.playlist-card:hover .playlist-image{
+   filter: brightness(30%);
+}
+
 .track-info {
     margin-top: 10px;
 }
