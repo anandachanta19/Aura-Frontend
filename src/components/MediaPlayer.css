@@ -1,0 +1,308 @@
+.App {
+  background-color: #000;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: 'Fira Code', sans-serif;
+  position: relative;
+  overflow: hidden;
+  overflow-y: hidden; /* Prevent scroll in normal view */
+}
+
+.blur-overlay {
+  object-fit: fill;
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(60px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: row; /* Lyrics on the right */
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1200px; /* Adjusted for design */
+  height: auto;
+  padding: 2rem;
+  transition: all 0.5s ease;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 400px; /* Fixed width for player */
+  transition: all 0.5s ease;
+}
+
+.player-container.lyrics-active {
+  max-width: 1600px;
+}
+
+.album-art {
+  width: 300px; /* Match design */
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.track-title {
+  font-size: 1.8rem; /* Match design */
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.track-artist {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0.2rem 0 1.5rem;
+  text-align: center;
+}
+
+.lyrics-like-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  margin-bottom: 0.7rem;
+}
+
+.lyrics-btn {
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+
+.lyrics-like-container .control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+
+.time-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.elapsed-time,
+.remaining-time {
+  font-size: 0.8rem;
+  color: #fff;
+  position: relative;
+}
+
+.progress-bar {
+  width: 300px; /* Match design */
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 auto;
+  border-radius: 1px;
+  appearance: none;
+  outline: none;
+  border: none;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 350px; /* Adjusted width for symmetry */
+}
+
+.control-btn {
+  padding: 0.5rem;
+  background: transparent;
+}
+
+.lyrics-container {
+  display: block;
+  background-color: transparent;
+  color: #fff;
+  width: 400px; /* Fixed width for lyrics */
+  height: auto;
+  max-height: 700px;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+  text-align: left; /* Align lyrics to the left */
+  margin-left: 2rem; /* Space between player and lyrics */
+}
+
+.player-container.lyrics-active .lyrics-container {
+  display: block;
+}
+
+.lyrics-container pre {
+  white-space: pre-wrap;
+  font-family: 'Fira Code', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+.searching-lyrics {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.volume-slider-wrapper {
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  background-color: #000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.volume-slider-wrapper.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.volume-slider.vertical {
+  appearance: slider-vertical;
+  -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
+  width: 5px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-radius: 2px;
+}
+
+.queue-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.queue-overlay h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.queue-overlay ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.queue-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.queue-album-art {
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+}
+
+.queue-track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.queue-track-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.queue-track-artist {
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.close-queue-btn {
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.player-container:not(.lyrics-active) .controls-wrapper {
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .App {
+    overflow-y: scroll;
+  }
+
+  .player-container {
+    flex-direction: column; 
+    align-items: center;
+  }
+
+  .lyrics-container {
+    margin-left: 0;
+    margin-top: 2rem; 
+    width: 100%; 
+  }
+}

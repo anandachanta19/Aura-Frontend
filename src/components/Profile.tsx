@@ -72,15 +72,13 @@ const Profile: React.FC = () => {
 
       <div className="header">
         <h2 className="nav-title">Profile</h2>
-        <button className="back-button" onClick={() => window.history.back()}>
-          <h2 className="nav-title">Back</h2>
-        </button>
+        <h2 className="nav-title" onClick={() => window.history.back()}>Back</h2>
       </div>
 
       <div className="profile-data-container">
         <div className="profile-content">
           <img
-            src={profile?.profile_picture}
+            src={profile?.profile_picture || ""}
             alt="Profile"
             className="profile-pic"
           />

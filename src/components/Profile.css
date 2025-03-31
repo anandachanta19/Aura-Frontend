@@ -25,12 +25,11 @@ body {
     position: relative;
 }
 
-/* Blurred Background Effect */
 .blur-overlay {
     position: absolute;
     inset: 0;
     backdrop-filter: blur(50px);
-    background-color: rgba(0, 0, 0, 0.5); /* Slight overlay for contrast */
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 0;
 }
 
@@ -46,6 +45,8 @@ body {
 .header {
     padding-top: 40px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
 }
@@ -54,11 +55,16 @@ body {
     font-size: 24px;
     padding-left: 200px;
     padding-right: 200px;
+    cursor: pointer;
 }
 
 .back-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-size: 24px;
-    font-weight: 1200;
+    font-weight: 900;
     background: none;
     border: none;
     cursor: pointer;

@@ -28,9 +28,7 @@ const Library: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Session Key:", sessionKey); // Debug session key
     if (!sessionKey) {
-      console.log("No session key, setting error");
       setError("Session key is missing. Please log in again.");
       setLoading(false);
       return;
@@ -39,38 +37,46 @@ const Library: React.FC = () => {
     const fetchLibrary = async () => {
       try {
         setLoading(true);
-        console.log("Fetching library data...");
         const response = await axios.get(
-          `http://localhost:8000/api/spotify/library/`,
-          { params: { session: sessionKey } },
+          "http://localhost:8000/api/spotify/library/",
+          { params: { session: sessionKey } }
         );
-        console.log("API Response:", response.data); // Debug API response
         setRecentTracks(response.data.recently_played || []);
         setPlaylists(response.data.playlists || []);
         setError(null);
       } catch (err: any) {
-        console.error("Error fetching library:", err);
         setError(err.response?.data?.error || "Failed to fetch library.");
       } finally {
         setLoading(false);
-        console.log("Loading complete, state:", {
-          loading,
-          error,
-          recentTracks,
-          playlists,
-        });
       }
     };
 
     fetchLibrary();
   }, [sessionKey]);
 
+  // Handler for playing a track
+  const handlePlayTrack = async (trackId: string) => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/go/mediaplayer/", {
+        params: { track_id: trackId, session: sessionKey },
+      });
+      const redirectUrl = response.data.redirect_url;
+      if (redirectUrl) {
+        // Redirect the browser to the media player page.
+        window.location.href = redirectUrl;
+      }
+    } catch (err: any) {
+      console.error("Error fetching track redirect URL:", err);
+      setError("Failed to redirect to the media player.");
+    }
+  };
+
+  // Handler for opening a playlist (unchanged)
   const handleOpenPlaylist = async (playlistId: string) => {
     try {
       const response = await axios.get("http://localhost:8000/api/go/playlist/", {
         params: { playlist_id: playlistId, session: sessionKey },
       });
-  
       const redirectUrl = response.data.redirect_url;
       if (redirectUrl) {
         window.location.href = redirectUrl;
@@ -81,15 +87,14 @@ const Library: React.FC = () => {
     }
   };
 
-  // Always render the header
   return (
     <div className="library-container">
       <Aurora />
       <div className="header">
         <h2 className="library-title">Your Library</h2>
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <h2 className="library-title" onClick={() => navigate(-1)}>
           Back
-        </button>
+        </h2>
       </div>
 
       {loading && <div className="loading">Loading...</div>}
@@ -117,7 +122,11 @@ const Library: React.FC = () => {
                         className="track-image"
                       />
                       <div className="overlay">
-                        <button className="play-button" aria-label="Play">
+                        <button
+                          className="play-button"
+                          aria-label="Play"
+                          onClick={() => handlePlayTrack(track.id)}
+                        >
                           <FaPlay />
                         </button>
                       </div>
@@ -147,7 +156,11 @@ const Library: React.FC = () => {
                         className="playlist-image"
                       />
                       <div className="overlay">
-                        <button className="open-button" aria-label="Open" onClick={() => handleOpenPlaylist(playlist.id)}>
+                        <button
+                          className="open-button"
+                          aria-label="Open"
+                          onClick={() => handleOpenPlaylist(playlist.id)}
+                        >
                           <FaFolderOpen />
                         </button>
                       </div>

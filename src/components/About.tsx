@@ -35,10 +35,10 @@ const About: React.FC = () => {
       <Aurora />
 
       <nav className="about-nav">
-        <h1>About</h1>
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <h2 className="library-title">About</h2>
+        <h2 className="library-title" onClick={() => navigate(-1)}>
           Back
-        </button>
+        </h2>
       </nav>
 
       <div className="about-content">
