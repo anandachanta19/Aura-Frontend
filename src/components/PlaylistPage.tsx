@@ -46,6 +46,25 @@ const PlaylistPage: React.FC = () => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const handleSharePlaylist = () => {
+    // Here you would implement your sharing logic
+    if (navigator.share) {
+      navigator
+        .share({
+          title: playlist?.name || "Awesome Playlist",
+          text: "Check out this awesome playlist I found!",
+          url: window.location.href,
+        })
+        .catch(console.error);
+    } else {
+      // Fallback for browsers that don't support the Web Share API
+      navigator.clipboard
+        .writeText(window.location.href)
+        .then(() => alert("Playlist link copied to clipboard!"))
+        .catch(console.error);
+    }
+  };
+
   const handlePlayTrack = async (trackId: string) => {
     try {
       const response = await axios.get("http://localhost:8000/api/go/mediaplayer", {
@@ -133,7 +152,7 @@ const PlaylistPage: React.FC = () => {
             <h1>{playlist?.name}</h1>
             <div className="playlist-controls">
               <button className="control-button" onClick={handlePlayPlaylist}>Play</button>
-              <button className="control-button">Share</button>
+              <button className="control-button" onClick={handleSharePlaylist}>Share</button>
             </div>
           </div>
         </div>

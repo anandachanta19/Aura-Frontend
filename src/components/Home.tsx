@@ -56,7 +56,6 @@ const Home: React.FC = () => {
           <h1>Aura</h1>
         </div>
         <div className="navbar-right">
-          <button onClick={() => handleNavigation("go/home")}>Home</button>
           <button onClick={() => handleNavigation("go/profile")}>
             Profile
           </button>
@@ -64,6 +63,9 @@ const Home: React.FC = () => {
             Library
           </button>
           <button onClick={() => handleNavigation("go/about")}>About</button>
+          <button onClick={() => handleNavigation("spotify/logout")}>
+            Logout
+          </button>
         </div>
       </nav>
       <div className="recommendation">
