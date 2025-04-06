@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Aurora from "../components/ui/Aurora/Aurora";
 import './EmotionSelection.css';
 
@@ -13,7 +13,14 @@ const emotions = [
   { name: 'Calm', emoji: '😌', color: '#32CD32' },
 ];
 
-const genres = ['Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic'];
+const emotionGenreMapping: Record<string, string[]> = {
+  Happy: ["Pop", "Dance", "Electronic", "Funk", "Disco"],
+  Sad: ["Acoustic", "Blues", "Classical", "Soul", "Folk"],
+  Angry: ["Metal", "Rock", "Punk", "Hardcore", "Grunge"],
+  Surprise: ["Indie", "Alternative", "Experimental", "Psychedelic"],
+  Excited: ["Hip-Hop", "Rap", "Party", "Trap", "Reggaeton"],
+  Calm: ["Ambient", "Chill", "Jazz", "Lo-Fi", "New-Age"],
+};
 
 const EmotionSelection: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +30,6 @@ const EmotionSelection: React.FC = () => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<any[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!sessionKey) {
@@ -42,16 +48,24 @@ const EmotionSelection: React.FC = () => {
 
   const handleRecommendSongs = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/recommend_songs/', {
+      const response = await axios.post("http://localhost:8000/api/go/recommend/songs/", {
         emotion: selectedEmotion,
         genres: selectedGenres,
-        // session: "your_session_key_here" // Uncomment and add if needed
+      }, {
+        params: { session: sessionKey },
       });
-      setRecommendations(response.data.songs);
+      const data = response.data;
+      if (data.redirect_url) {
+        window.location.href = `${data.redirect_url}&emotion=${encodeURIComponent(selectedEmotion || '')}&genres=${encodeURIComponent(selectedGenres.join(','))}`;
+      } else {
+        setError(data.error || "Failed to navigate.");
+      }
     } catch (error) {
-      console.error('Error fetching recommendations:', error);
+      console.error("Error navigating to Recommend Songs:", error);
     }
   };
+
+  const genres = selectedEmotion ? emotionGenreMapping[selectedEmotion] || [] : [];
 
   if (loading) return <div>Loading...</div>;
   if (error)
@@ -68,67 +82,69 @@ const EmotionSelection: React.FC = () => {
       <div className="emotion-selection">
         <nav className="about-nav">
           <h2 className="select_title">Select Emotion</h2>
-          <h2 className="select-title" onClick={() => navigate(-1)}>
+          <h2 className="select-title" onClick={() => window.history.back()}>
             Back
           </h2>
         </nav>
-
-        <p>Select your current emotion and preferred genre.</p>
-        
-        <div className="selections">
-          <div className="emotion-section">
-            <h3>Emotion</h3>
-            <div className="emotion-list">
-              {emotions.map(emotion => (
-                <div
-                  key={emotion.name}
-                  className={`emotion-item ${selectedEmotion === emotion.name ? 'selected' : ''}`}
-                  style={{ '--emotion-color': emotion.color } as React.CSSProperties}
-                  onClick={() => setSelectedEmotion(emotion.name)}
-                >
-                  <span className="emoji">{emotion.emoji}</span>
-                  <span className="name">{emotion.name}</span>
-                </div>
-              ))}
+        <div className='emotion-selection-div'>
+          <p>Select your current emotion and preferred genre.</p>
+          
+          <div className="selections">
+            <div className="emotion-section">
+              <h3>Emotion</h3>
+              <div className="emotion-list">
+                {emotions.map(emotion => (
+                  <div
+                    key={emotion.name}
+                    className={`emotion-item ${selectedEmotion === emotion.name ? 'selected' : ''}`}
+                    style={{ '--emotion-color': emotion.color } as React.CSSProperties}
+                    onClick={() => setSelectedEmotion(emotion.name)}
+                  >
+                    <span className="emoji">{emotion.emoji}</span>
+                    <span className="name">{emotion.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="genre-section">
-            <h3>Genre</h3>
-            <div className="genre-list">
-              {genres.map(genre => (
-                <div
-                  key={genre}
-                  className={`genre-item ${selectedGenres.includes(genre) ? 'selected' : ''}`}
-                  onClick={() => handleGenreClick(genre)}
-                >
-                  {genre}
+            {selectedEmotion && (
+              <div className="genre-section">
+                <h3>Genre</h3>
+                <div className="genre-list">
+                  {genres.map(genre => (
+                    <div
+                      key={genre}
+                      className={`genre-item ${selectedGenres.includes(genre) ? 'selected' : ''}`}
+                      onClick={() => handleGenreClick(genre)}
+                    >
+                      {genre}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
+          <button
+            className="generate-button"
+            disabled={!selectedEmotion || selectedGenres.length === 0}
+            onClick={handleRecommendSongs}
+          >
+            Recommend Songs
+          </button>
+
+          {recommendations.length > 0 && (
+            <div className="recommendations">
+              <h3>Recommended Songs</h3>
+              <ul>
+                {recommendations.map((song, index) => (
+                  <li key={index}>
+                    {song.name} by {song.artist} (Album: {song.album})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-
-        <button
-          className="generate-button"
-          disabled={!selectedEmotion || selectedGenres.length === 0}
-          onClick={handleRecommendSongs}
-        >
-          Recommend Songs
-        </button>
-
-        {recommendations.length > 0 && (
-          <div className="recommendations">
-            <h3>Recommended Songs</h3>
-            <ul>
-              {recommendations.map((song, index) => (
-                <li key={index}>
-                  {song.name} by {song.artist} (Album: {song.album})
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );

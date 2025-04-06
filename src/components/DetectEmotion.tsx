@@ -5,7 +5,23 @@ import Webcam from "react-webcam";
 import "./DetectEmotion.css";
 import Aurora from "./ui/Aurora/Aurora";
 
-const genres = ['Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic'];
+const emotionGenreMapping: Record<string, string[]> = {
+  Happy: ["Pop", "Dance", "Electronic", "Funk", "Disco"],
+  Sad: ["Acoustic", "Blues", "Classical", "Soul", "Folk"],
+  Angry: ["Metal", "Rock", "Punk", "Hardcore", "Grunge"],
+  Surprise: ["Indie", "Alternative", "Experimental", "Psychedelic"],
+  Excited: ["Hip-Hop", "Rap", "Party", "Trap", "Reggaeton"],
+  Calm: ["Ambient", "Chill", "Jazz", "Lo-Fi", "New-Age"],
+};
+
+const emotionSentences: Record<string, string> = {
+  Happy: "You seem to be in a great mood! Let's find some upbeat music for you.",
+  Sad: "Feeling down? Here's some soothing music to lift your spirits.",
+  Angry: "Let's channel that energy with some intense tunes.",
+  Surprise: "Surprised? Let's explore some experimental genres together.",
+  Excited: "You're full of energy! Let's get the party started with some lively beats.",
+  Calm: "You seem relaxed. Here's some chill music to keep the vibe going.",
+};
 
 const DetectEmotion: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -23,9 +39,11 @@ const DetectEmotion: React.FC = () => {
     angry: 0,
     sad: 0,
     surprised: 0,
-    neutral: 0,
+    calm: 0, // Changed from neutral to calm
     fearful: 0,
   });
+
+  const genres = detectedEmotion ? emotionGenreMapping[detectedEmotion] || [] : [];
 
   // Detect emotion from webcam
   const detectEmotion = async () => {
@@ -48,7 +66,7 @@ const DetectEmotion: React.FC = () => {
       }
 
       Object.keys(frameEmotions).forEach((key) => {
-        const mappedKey = key === "surprise" ? "surprised" : key === "fear" ? "fearful" : key;
+        const mappedKey = key === "surprise" ? "surprised" : key === "fear" ? "fearful" : key === "neutral" ? "calm" : key;
         if (mappedKey in emotionCount.current) {
           emotionCount.current[mappedKey] += frameEmotions[key];
         }
@@ -76,19 +94,21 @@ const DetectEmotion: React.FC = () => {
       setTimeout(async () => {
         clearInterval(interval);
         setIsDetecting(false);
-
+  
         try {
           const response = await axios.post("http://localhost:8000/api/get/dominant/emotion/", {
-            emotion_count: emotionCount.current}, {
-              params: { session: sessionKey }, // Pass session key as a query parameter
-            });
+            emotion_count: emotionCount.current,
+          }, {
+            params: { session: sessionKey }, // Pass session key as a query parameter
+          });
           const data = response.data;
           if ("error" in data) {
             throw new Error(data.error);
           }
-          const dominantEmotion = data.dominant_emotion;
-          setDetectedEmotion(dominantEmotion);
-          setSelectedGenres([]);
+          const dominantEmotion = data.dominant_emotion === "neutral" ? "calm" : data.dominant_emotion;
+          const formattedEmotion = dominantEmotion.charAt(0).toUpperCase() + dominantEmotion.slice(1); // Capitalize emotion
+          setDetectedEmotion(formattedEmotion);
+          setSelectedGenres([]); // Ensure no genres are pre-selected
           setRecommendations([]);
         } catch (error) {
           console.error("Error getting dominant emotion:", error);
@@ -102,7 +122,7 @@ const DetectEmotion: React.FC = () => {
   const handleCaptureFace = () => {
     if (!isDetecting) {
       setDetectedEmotion(null);
-      emotionCount.current = { happy: 0, angry: 0, sad: 0, surprised: 0, neutral: 0, fearful: 0 };
+      emotionCount.current = { happy: 0, angry: 0, sad: 0, surprised: 0, calm: 0, fearful: 0 };
       setIsDetecting(true);
     }
   };
@@ -113,11 +133,23 @@ const DetectEmotion: React.FC = () => {
     );
   };
 
-  const handleRecommendSongs = () => {
-    setRecommendations([
-      { name: "Song 1", artist: "Artist 1", album: "Album 1" },
-      { name: "Song 2", artist: "Artist 2", album: "Album 2" },
-    ]);
+  const handleRecommendSongs = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/go/recommend/songs/", {
+        emotion: detectedEmotion,
+        genres: selectedGenres,
+      }, {
+        params: { session: sessionKey },
+      });
+      const data = response.data;
+      if (data.redirect_url) {
+        window.location.href = `${data.redirect_url}&emotion=${encodeURIComponent(detectedEmotion || '')}&genres=${encodeURIComponent(selectedGenres.join(','))}`;
+      } else {
+        setError(data.error || "Failed to navigate.");
+      }
+    } catch (error) {
+      console.error("Error navigating to Recommend Songs:", error);
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -132,27 +164,37 @@ const DetectEmotion: React.FC = () => {
   return (
     <div className="DetectEmotion">
       <Aurora />
-      <nav className="about-nav">
-          <h2 className="select_title">Capture Emotion</h2>
-          <h2 className="select-title" onClick={() => navigate(-1)}>
-            Back
-          </h2>
-      </nav>
+      <div className="about-nav">
+        <h2 className="library-title">Capture Face</h2>
+        <h2 className="library-title" onClick={() => navigate(-1)}>
+          Back
+        </h2>
+      </div>
       {isDetecting && (
-        <div className="webcam-container">
-          <Webcam
-            ref={webcamRef}
-            audio={false}
-            width={320}
-            height={240}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{ facingMode: "user" }}
-          />
+        <div className="isDetectingContainer">
+          <p>Hold on! We are analysing your face... </p>
+          <div className="webcam-container">
+            <Webcam
+              ref={webcamRef}
+              audio={false}
+              width={320}
+              height={240}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode: "user" }}
+            />
+          </div>
         </div>
+        
       )}
       {detectedEmotion && (
         <div className="result">
-          <p className="emotion-result">Detected Emotion: {detectedEmotion}</p>
+          <p className="emotion-result">
+            {detectedEmotion in emotionSentences
+              ? emotionSentences[detectedEmotion]
+              : detectedEmotion
+              ? `Detected Emotion: ${detectedEmotion}`
+              : "No emotion detected. Please try again."}
+          </p>
           <div className="genre-section">
             <h3>Select Genres</h3>
             <div className="genre-list">
@@ -167,15 +209,13 @@ const DetectEmotion: React.FC = () => {
               ))}
             </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <button
-              className="generate-button"
-              disabled={selectedGenres.length === 0}
-              onClick={handleRecommendSongs}
-            >
-              Recommend Songs
-            </button>
-          </div>
+          <button
+            className="generate-button"
+            disabled={selectedGenres.length === 0}
+            onClick={handleRecommendSongs}
+          >
+            Recommend Songs
+          </button>
           {recommendations.length > 0 && (
             <div className="recommendations">
               <h3>Recommended Songs</h3>

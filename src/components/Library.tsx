@@ -87,6 +87,17 @@ const Library: React.FC = () => {
     }
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error)
+    return (
+      <div>
+        <p>Error: {error}</p>
+        <a href="http://localhost:8000/api/spotify/login/">
+          Log in with Spotify
+        </a>
+      </div>
+    );
+
   return (
     <div className="library-container">
       <Aurora />
@@ -97,86 +108,72 @@ const Library: React.FC = () => {
         </h2>
       </div>
 
-      {loading && <div className="loading">Loading...</div>}
-      {error && (
-        <div className="error">
-          <p>Error: {error}</p>
-          <a href="http://localhost:8000/api/spotify/login/">
-            Log in with Spotify
-          </a>
+      <div className="section">
+        <h3>Recently Played</h3>
+        <div className="grid-container">
+          {recentTracks.length > 0 ? (
+            recentTracks.map((track) => (
+              <div className="track-card" key={track.id}>
+                <div className="image-container">
+                  <img
+                    src={track.album_cover || "/fallback-image.jpg"}
+                    alt={track.name}
+                    className="track-image"
+                  />
+                  <div className="overlay">
+                    <button
+                      className="play-button"
+                      aria-label="Play"
+                      onClick={() => handlePlayTrack(track.id)}
+                    >
+                      <FaPlay />
+                    </button>
+                  </div>
+                </div>
+                <div className="track-info">
+                  <p className="track-name">{track.name.toUpperCase()}</p>
+                  <p className="track-artist">{track.artist}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No recently played tracks available.</p>
+          )}
         </div>
-      )}
+      </div>
 
-      {!loading && !error && (
-        <>
-          <div className="section">
-            <h3>Recently Played</h3>
-            <div className="grid-container">
-              {recentTracks.length > 0 ? (
-                recentTracks.map((track) => (
-                  <div className="track-card" key={track.id}>
-                    <div className="image-container">
-                      <img
-                        src={track.album_cover || "/fallback-image.jpg"}
-                        alt={track.name}
-                        className="track-image"
-                      />
-                      <div className="overlay">
-                        <button
-                          className="play-button"
-                          aria-label="Play"
-                          onClick={() => handlePlayTrack(track.id)}
-                        >
-                          <FaPlay />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="track-info">
-                      <p className="track-name">{track.name.toUpperCase()}</p>
-                      <p className="track-artist">{track.artist}</p>
-                    </div>
+      <div className="section">
+        <h3>Your Playlists</h3>
+        <div className="grid-container">
+          {playlists.length > 0 ? (
+            playlists.map((playlist) => (
+              <div className="playlist-card" key={playlist.id}>
+                <div className="image-container">
+                  <img
+                    src={playlist.image_url || "/fallback-image.jpg"}
+                    alt={playlist.name}
+                    className="playlist-image"
+                  />
+                  <div className="overlay">
+                    <button
+                      className="open-button"
+                      aria-label="Open"
+                      onClick={() => handleOpenPlaylist(playlist.id)}
+                    >
+                      <FaFolderOpen />
+                    </button>
                   </div>
-                ))
-              ) : (
-                <p>No recently played tracks available.</p>
-              )}
-            </div>
-          </div>
-
-          <div className="section">
-            <h3>Your Playlists</h3>
-            <div className="grid-container">
-              {playlists.length > 0 ? (
-                playlists.map((playlist) => (
-                  <div className="playlist-card" key={playlist.id}>
-                    <div className="image-container">
-                      <img
-                        src={playlist.image_url || "/fallback-image.jpg"}
-                        alt={playlist.name}
-                        className="playlist-image"
-                      />
-                      <div className="overlay">
-                        <button
-                          className="open-button"
-                          aria-label="Open"
-                          onClick={() => handleOpenPlaylist(playlist.id)}
-                        >
-                          <FaFolderOpen />
-                        </button>
-                      </div>
-                    </div>
-                    <p className="playlist-name">
-                      {playlist.name.toUpperCase()}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p>No playlists available.</p>
-              )}
-            </div>
-          </div>
-        </>
-      )}
+                </div>
+                <p className="playlist-name">
+                  {playlist.name.toUpperCase()}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>No playlists available.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

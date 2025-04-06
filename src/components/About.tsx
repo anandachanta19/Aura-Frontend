@@ -34,12 +34,12 @@ const About: React.FC = () => {
     <div className="about-page">
       <Aurora />
 
-      <nav className="about-nav">
+      <div className="about-nav">
         <h2 className="library-title">About</h2>
         <h2 className="library-title" onClick={() => navigate(-1)}>
           Back
         </h2>
-      </nav>
+      </div>
 
       <div className="about-content">
         <h2>Emotion Based Music Player</h2>
