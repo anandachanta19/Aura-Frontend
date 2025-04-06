@@ -113,17 +113,36 @@
   font-size: 0.8rem;
   color: #fff;
   position: relative;
+  margin: 0 10px;
 }
 
+/* Updated progress bar styling with filled effect */
 .progress-bar {
   width: 300px; /* Match design */
   height: 5px;
   background-color: rgba(255, 255, 255, 0.3);
   margin: 0 auto;
-  border-radius: 1px;
+  border-radius: 5px;
   appearance: none;
   outline: none;
   border: none;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden; /* Important to contain the pseudo-element */
+}
+
+/* Create the fill effect with a pseudo-element */
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress-percent, 0%);
+  background-color: #fff;
+  pointer-events: none;
+  z-index: -1;
+  transition: width 0.1s linear;
 }
 
 .progress-bar::-webkit-slider-thumb {
@@ -133,6 +152,19 @@
   background: #fff;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-bar::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  z-index: 2;
 }
 
 .controls {
