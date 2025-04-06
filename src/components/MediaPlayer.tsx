@@ -45,6 +45,10 @@ function MediaPlayer() {
   // This flag ensures we only adjust the queue once when navigating between playlists and songs.
   const [initializedQueue, setInitializedQueue] = useState(false);
 
+  const truncateText = (text: string, limit: number) => {
+    return text.length > limit ? text.substring(0, limit) + "..." : text;
+  };
+
   // ---------------------------
   // API calls for track & playlist data
   // ---------------------------
@@ -106,35 +110,18 @@ function MediaPlayer() {
   const fetchLyrics = async (trackTitle: string, trackArtist: string) => {
     setIsFetchingLyrics(true); // Start fetching
     try {
-      const artists = trackArtist.split(",").map(artist => artist.trim());
-      for (const artist of artists) {
-        try {
-          const response = await axios.get(`https://api.lyrics.ovh/v1/${artist}/${trackTitle}`);
-          if (response.data.lyrics) {
-            setLyrics(response.data.lyrics);
-            setIsFetchingLyrics(false); // Stop fetching
-            return;
-          }
-        } catch (err) {
-          console.warn(`Failed to fetch lyrics for artist ${artist}:`, err);
-        }
-        // Try splitting artist name by space for additional attempts.
-        const subArtists = artist.split(" ").map(sub => sub.trim());
-        for (const subArtist of subArtists) {
-          try {
-            const response = await axios.get(`https://api.lyrics.ovh/v1/${subArtist}/${trackTitle}`);
-            if (response.data.lyrics) {
-              setLyrics(response.data.lyrics);
-              setIsFetchingLyrics(false); // Stop fetching
-              return;
-            }
-          } catch (err) {
-            console.warn(`Failed to fetch lyrics for sub-artist ${subArtist}:`, err);
-          }
-        }
+      const response = await axios.get("http://localhost:8000/api/spotify/lyrics/", {
+        params: {
+          session: sessionKey,
+          song_title: trackTitle,
+          artist_name: trackArtist,
+        },
+      });
+      if (response.data.lyrics) {
+        setLyrics(response.data.lyrics);
+      } else {
+        setLyrics(null);
       }
-      // If no lyrics found, clear the lyrics (so container is not rendered)
-      setLyrics(null);
     } catch (err) {
       console.error("Failed to fetch lyrics:", err);
       setLyrics(null);
@@ -477,8 +464,12 @@ function MediaPlayer() {
                 alt="Album Art" 
                 className="album-art" 
               />
-              <h1 className="track-title">{currentTrack.title}</h1>
-              <h2 className="track-artist">{currentTrack.artist}</h2>
+              <h1 className="track-title one-line">
+                {currentTrack.title}
+              </h1>
+              <h2 className="track-artist one-line">
+                {currentTrack.artist}
+              </h2>
             </>
           )}
           <div className="lyrics-like-container">

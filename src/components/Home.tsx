@@ -72,8 +72,8 @@ const Home: React.FC = () => {
         <p>Wanna get recommendations based on your current emotion?</p>
         <h2>CHOOSE AN OPTION</h2>
         <div className="button-group">
-          <button className="capture-button">Capture Face</button>
-          <button className="select-button">Select Emotion</button>
+          <button className="capture-button" onClick={() => handleNavigation("go/detect/emotion")}>Capture Face</button>
+          <button className="select-button" onClick={() => handleNavigation("go/select/emotion")}>Select Emotion</button>
         </div>
         <p className="note">For better results, try Select Emotion.</p>
       </div>
