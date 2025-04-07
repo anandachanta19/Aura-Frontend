@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import styles from "./PlaylistPage.module.css"; // Import the CSS module
+import "./PlaylistPage.css"; // Import regular CSS instead of module
 
 interface Song {
   id: number;
@@ -97,6 +97,16 @@ const PlaylistPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Add the class to body when component mounts
+    document.body.classList.add('playlist-page-active');
+    
+    // Clean up function to remove the class when component unmounts
+    return () => {
+      document.body.classList.remove('playlist-page-active');
+    };
+  }, []);
+
+  useEffect(() => {
     if (!sessionKey) {
       setError("Session key is missing. Please log in again.");
       setLoading(false);
@@ -134,45 +144,45 @@ const PlaylistPage: React.FC = () => {
 
   return (
     <div
-      className={styles["main-content"]} // Apply CSS module class
+      className="main-content" // Regular class instead of CSS module
       style={{ backgroundImage: `url(${playlist?.image_url})` }}
     >
-      <div className={styles["blur-overlay"]}></div>
-      <div className={styles["playlist-page"]}>
-        <button className={styles["back-button"]} onClick={() => navigate(-1)}>
+      <div className="blur-overlay"></div>
+      <div className="playlist-page">
+        <button className="back-button" onClick={() => navigate(-1)}>
           Back
         </button>
-        <div className={styles["header"]}>
+        <div className="header">
           <div
-            className={styles["playlist-artwork"]}
+            className="playlist-artwork"
             style={{ backgroundImage: `url(${playlist?.image_url})` }}
           ></div>
-          <div className={styles["playlist-info"]}>
-            <div className={styles["label"]}>PLAYLIST</div>
+          <div className="playlist-info">
+            <div className="label">PLAYLIST</div>
             <h1>{playlist?.name}</h1>
-            <div className={styles["playlist-controls"]}>
-              <button className={styles["control-button"]} onClick={handlePlayPlaylist}>Play</button>
-              <button className={styles["control-button"]} onClick={handleSharePlaylist}>Share</button>
+            <div className="playlist-controls">
+              <button className="control-button" onClick={handlePlayPlaylist}>Play</button>
+              <button className="control-button" onClick={handleSharePlaylist}>Share</button>
             </div>
           </div>
         </div>
-        <div className={styles["song-list"]}>
+        <div className="song-list">
           <table>
             <tbody>
               {playlist?.songs.map((song, index) => (
                 <tr key={song.id}>
                   <td>{index + 1}</td>
                   <td>
-                    <div className={styles["song-info"]}>
-                      <div className={styles["song-image-container"]}>
+                    <div className="song-info">
+                      <div className="song-image-container">
                         <img src={song.albumArt} alt={song.title} />
-                        <div className={styles["play-icon-overlay"]} onClick={() => handlePlayTrack(String(song.id))}>
-                          <FaPlay className={styles["play-icon"]} />
+                        <div className="play-icon-overlay" onClick={() => handlePlayTrack(String(song.id))}>
+                          <FaPlay className="play-icon" />
                         </div>
                       </div>
                       <div>
-                        <div className={styles["title"]}>{song.title}</div>
-                        <div className={styles["artist"]}>{song.artist}</div>
+                        <div className="title">{song.title}</div>
+                        <div className="artist">{song.artist}</div>
                       </div>
                     </div>
                   </td>

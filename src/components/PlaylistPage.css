@@ -3,6 +3,7 @@
 .main-content {
   position: relative;
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   overflow-y: auto; 
@@ -111,7 +112,8 @@
 }
 
 /* Song List */
-.song-list {
+.main-content .song-list {
+  max-width: 100vw;
   padding: 20px 0;
 }
 
@@ -136,8 +138,10 @@
   background-color: #2a2a2a;
 }
 
-.song-info {
+.main-content .song-info {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
 }
 
