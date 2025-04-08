@@ -69,39 +69,39 @@ const Profile: React.FC = () => {
       style={{ backgroundImage: `url(${profile?.profile_picture})` }}
     >
       <div className="blur-overlay"></div>
-
-      <div className="header">
-        <h2 className="nav-title">Profile</h2>
-        <h2 className="nav-title" onClick={() => window.history.back()}>Back</h2>
-      </div>
-
-      <div className="profile-data-container">
-        <div className="profile-content">
-          <img
-            src={profile?.profile_picture || ""}
-            alt="Profile"
-            className="profile-pic"
-          />
-          <h1 className="display-name">{profile?.display_name}</h1>
-          <p className="email">Email: {profile?.email}</p>
-          <p className="followers">Followers: {profile?.followers}</p>
+      <div className="profile-page">
+        <div className="header">
+          <h2 className="nav-title">Profile</h2>
+          <h2 className="nav-title" onClick={() => window.history.back()}>Back</h2>
         </div>
-        <div className="info-section">
-          <div className="top-artists">
-            <h3>TOP ARTISTS</h3>
-            <ul>
-              {profile?.top_artists.map((artist, index) => (
-                <li key={index}>{artist}</li>
-              ))}
-            </ul>
+        <div className="profile-data-container">
+          <div className="profile-content">
+            <img
+              src={profile?.profile_picture || ""}
+              alt="Profile"
+              className="profile-pic"
+            />
+            <h1 className="display-name">{profile?.display_name}</h1>
+            <p className="email">Email: {profile?.email}</p>
+            <p className="followers">Followers: {profile?.followers}</p>
           </div>
-          <div className="playlists">
-            <h3>PLAYLISTS</h3>
-            <ul>
-              {profile?.playlists.map((playlist, index) => (
-                <li key={index}>{playlist.name}</li>
-              ))}
-            </ul>
+          <div className="info-section">
+            <div className="top-artists">
+              <h3>TOP ARTISTS</h3>
+              <ul>
+                {profile?.top_artists.map((artist, index) => (
+                  <li key={index}>{artist}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="playlists">
+              <h3>PLAYLISTS</h3>
+              <ul>
+                {profile?.playlists.map((playlist, index) => (
+                  <li key={index}>{playlist.name}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

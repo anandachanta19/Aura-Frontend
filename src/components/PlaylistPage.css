@@ -15,6 +15,7 @@
 .playlist-page {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 1;
   padding: 30px;
   color: #ffffff;
@@ -28,19 +29,21 @@
   z-index: 0;
 }
 
-.back-button {
+.playlist-back-button {
   position: absolute;
   top: 20px;
   right: 30px;
   padding: 10px 20px;
-  border: 2px solid white;
   border-radius: 20px;
   color: white;
-  background-color: transparent;
-  font-size: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
   transition: all 0.3s ease;
   font-weight: 600;
-  z-index: 2;
+  cursor: pointer;
+  z-index: 3; /* Ensure it stays above other elements */
+  pointer-events: auto; /* Ensure it is always interactable */
 }
 
 

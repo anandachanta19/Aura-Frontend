@@ -6,15 +6,26 @@ import "./RecommendSongs.css";
 import Aurora from "./ui/Aurora/Aurora";
 
 const RecommendSongs: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const sessionKey = searchParams.get("session");
+  const urlEmotion = searchParams.get("emotion");
+  const urlGenres = searchParams.get("genres");
+  
   // Use sessionStorage to persist songs between navigations
   const [songs, setSongs] = useState<any[]>(() => {
     const savedSongs = sessionStorage.getItem('recommendedSongs');
-    return savedSongs ? JSON.parse(savedSongs) : [];
+    const savedEmotion = sessionStorage.getItem('recommendedEmotion');
+    const savedGenres = sessionStorage.getItem('recommendedGenres');
+    
+    // Only use cached songs if the URL parameters match
+    if (savedSongs && savedEmotion === urlEmotion && savedGenres === urlGenres) {
+      return JSON.parse(savedSongs);
+    }
+    return [];
   });
+  
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(songs.length === 0);
-  const [searchParams] = useSearchParams();
-  const sessionKey = searchParams.get("session");
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const [emotion, setEmotion] = useState<string | null>(() => {
     return sessionStorage.getItem('recommendedEmotion') || null;
@@ -47,6 +58,7 @@ const RecommendSongs: React.FC = () => {
 
       setEmotion(emotion);
       sessionStorage.setItem('recommendedEmotion', emotion);
+      sessionStorage.setItem('recommendedGenres', urlParams.get("genres") || "");
 
       const response = await axios.post("http://localhost:8000/api/recommend/songs/", {
         emotion,
@@ -73,13 +85,19 @@ const RecommendSongs: React.FC = () => {
       return;
     }
 
-    // Only fetch recommendations if we don't have cached songs
-    if (songs.length === 0) {
+    // Check if we need to fetch new recommendations
+    const savedEmotion = sessionStorage.getItem('recommendedEmotion');
+    const savedGenres = sessionStorage.getItem('recommendedGenres');
+    
+    // Fetch recommendations if:
+    // 1. We have no cached songs, or
+    // 2. The URL parameters don't match the cached parameters
+    if (songs.length === 0 || savedEmotion !== urlEmotion || savedGenres !== urlGenres) {
       fetchRecommendations();
     } else {
       setLoading(false);
     }
-  }, [sessionKey, songs.length]);
+  }, [sessionKey, urlEmotion, urlGenres]);
 
   const handleCreatePlaylist = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,6 +138,8 @@ const RecommendSongs: React.FC = () => {
   const handleGoAgain = () => {
     // Clear cached songs before fetching new ones
     sessionStorage.removeItem('recommendedSongs');
+    sessionStorage.removeItem('recommendedEmotion');
+    sessionStorage.removeItem('recommendedGenres');
     fetchRecommendations();
   };
 

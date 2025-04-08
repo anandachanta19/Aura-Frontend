@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from "react-router-dom";
 import Aurora from "../components/ui/Aurora/Aurora";
 import './EmotionSelection.css';
+// Import React Icons
+import { FaRegAngry, FaRegSadTear, FaRegSmile, FaRegSurprise } from 'react-icons/fa';
+import { RiEmotionHappyLine, RiEmotionNormalLine } from 'react-icons/ri';
 
 const emotions = [
-  { name: 'Happy', emoji: '😊', color: '#FFD700' },
-  { name: 'Sad', emoji: '😢', color: '#1E90FF' },
-  { name: 'Angry', emoji: '😠', color: '#FF4500' },
-  { name: 'Surprise', emoji: '😲', color: '#FFA500' },
-  { name: 'Excited', emoji: '🤩', color: '#FF69B4' },
-  { name: 'Calm', emoji: '😌', color: '#32CD32' },
+  { name: 'Happy', emoji: <FaRegSmile />, color: '#FFD700' },
+  { name: 'Sad', emoji: <FaRegSadTear />, color: '#1E90FF' },
+  { name: 'Angry', emoji: <FaRegAngry />, color: '#FF4500' },
+  { name: 'Surprise', emoji: <FaRegSurprise />, color: '#FFA500' },
+  { name: 'Excited', emoji: <RiEmotionHappyLine />, color: '#FF69B4' },
+  { name: 'Calm', emoji: <RiEmotionNormalLine />, color: '#32CD32' },
 ];
 
 const emotionGenreMapping: Record<string, string[]> = {
@@ -100,7 +103,7 @@ const EmotionSelection: React.FC = () => {
                     style={{ '--emotion-color': emotion.color } as React.CSSProperties}
                     onClick={() => setSelectedEmotion(emotion.name)}
                   >
-                    <span className="emoji">{emotion.emoji}</span>
+                    <span className="emoji" style={{ fontSize: '1.5rem' }}>{emotion.emoji}</span>
                     <span className="name">{emotion.name}</span>
                   </div>
                 ))}

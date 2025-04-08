@@ -149,7 +149,7 @@ const PlaylistPage: React.FC = () => {
     >
       <div className="blur-overlay"></div>
       <div className="playlist-page">
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <button className="playlist-back-button" onClick={() => navigate(-1)}>
           Back
         </button>
         <div className="header">

@@ -1,28 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&display=swap");
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Fira Code", monospace;
-    color: white;
-}
-
-body {
-    background-color: black;
-}
-
 .profile-container {
-    min-width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.profile-page {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1;
+  /* padding: 30px; */
+  color: #ffffff;
 }
 
 .blur-overlay {
@@ -39,22 +36,21 @@ body {
 .profile-content,
 .info-section {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .header {
-    padding-top: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 100vw;
 }
 
 .nav-title {
-    font-size: 24px;
-    padding-left: 200px;
-    padding-right: 200px;
+    font-size: 1.5rem;
+    padding-left: 5%;
+    padding-right: 5%;
     cursor: pointer;
 }
 
@@ -63,7 +59,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 900;
     background: none;
     border: none;
@@ -75,61 +71,62 @@ body {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-evenl;
+    justify-content: space-evenly;
 }
 
 .profile-content {
-    padding: 20px;
-    width: 50%;
+    padding: 1.25rem;
+    width: 50vw;
     text-align: center;
-    margin: 30px;
+    margin: 1.875rem;
 }
 
 .profile-pic {
-    width: 437px;
-    height: 437px;
+    width: 100vw;
+    max-width: 437px;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid white;
 }
 
 .display-name {
-    font-size: 64px;
-    margin: 20px;
+    font-size: 3rem;
+    margin: 0.8rem;
 }
 
 .email,
 .followers,
 .list-items {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin: 10px;
+    margin: 0.625rem;
 }
 
 .info-section {
-    width: 50%;
+    width: 50vw;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     align-items: center;
-    margin: 30px;
+    margin: 1.875rem;
 }
 
 .top-artists {
-    margin: 20px;
+    margin: 1.25rem;
     width: 70%;
     text-align: center;
 }
 
 .playlists {
-    margin: 20px;
+    margin: 1.25rem;
     width: 70%;
     text-align: center;
 }
 
 h3 {
-    margin: 10px;
-    font-size: 48px;
+    margin: 0.625rem;
+    font-size: 3rem;
 }
 
 ul {
@@ -138,7 +135,107 @@ ul {
 }
 
 li {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-top: 5px;
+    margin-top: 0.313rem;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 1200px) {
+    .display-name {
+        font-size: 3rem;
+    }
+    
+    h3 {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .nav-title {
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+    
+    .display-name {
+        font-size: 2.5rem;
+    }
+
+    .profile-pic {
+        max-width: 300px;
+    }
+    
+    h3 {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile-data-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .profile-content, .info-section {
+        width: 90%;
+        margin: 1rem;
+    }
+    
+    .nav-title {
+        font-size: 1.2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .profile-pic {
+        max-width: 250px;
+    }
+
+    .display-name {
+        font-size: 2rem;
+    }
+    
+    .email, .followers, .list-items, li {
+        font-size: 1.2rem;
+    }
+    
+    h3 {
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .profile-pic {
+        max-width: 250px;
+    }
+    
+    .top-artists, .playlists {
+        width: 100%;
+    }
+    
+    .display-name {
+        font-size: 1.8rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    .email, .followers, .list-items, li {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .profile-pic {
+        max-width: 200px;
+    }
+    
+    .display-name {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+    }
 }
