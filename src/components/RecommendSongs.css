@@ -142,6 +142,30 @@
   z-index: 2; /* Ensure text stays above the Aurora background */
 }
 
+/* Add styles for text truncation */
+.track-name {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 5px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  font-size: 0.9rem;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .about-nav {
   display: flex;
   justify-content: space-between;

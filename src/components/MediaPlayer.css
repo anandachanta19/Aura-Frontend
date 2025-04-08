@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   color: #fff;
-  font-family: 'Fira Code', sans-serif;
+  font-family: 'Poppins', sans-serif;
   position: relative;
   overflow: hidden;
   overflow-y: hidden; /* Prevent scroll in normal view */
@@ -200,7 +200,7 @@
 
 .lyrics-container pre {
   white-space: pre-wrap;
-  font-family: 'Fira Code', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 1.5;
