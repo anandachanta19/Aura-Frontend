@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaFolderOpen, FaPlay } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Library.css";
@@ -53,6 +53,18 @@ const Library: React.FC = () => {
 
     fetchLibrary();
   }, [sessionKey]);
+
+  // Filter out duplicate tracks by ID
+  const uniqueRecentTracks = useMemo(() => {
+    const trackIds = new Set();
+    return recentTracks.filter(track => {
+      if (trackIds.has(track.id)) {
+        return false;
+      }
+      trackIds.add(track.id);
+      return true;
+    });
+  }, [recentTracks]);
 
   // Handler for playing a track
   const handlePlayTrack = async (trackId: string) => {
@@ -111,8 +123,8 @@ const Library: React.FC = () => {
       <div className="section">
         <h3>Recently Played</h3>
         <div className="grid-container">
-          {recentTracks.length > 0 ? (
-            recentTracks.map((track) => (
+          {uniqueRecentTracks.length > 0 ? (
+            uniqueRecentTracks.map((track) => (
               <div className="track-card" key={track.id}>
                 <div className="image-container">
                   <img
