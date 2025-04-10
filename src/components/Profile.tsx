@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../config/env";
 import "./Profile.css";
 
 interface Playlist {
@@ -36,7 +37,7 @@ const Profile: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get<SpotifyProfile>(
-          `http://localhost:8000/api/user/profile/`,
+          `${BACKEND_URL}/api/user/profile/`,
           { params: { session: sessionKey } },
         );
         setProfile(response.data);
@@ -57,7 +58,7 @@ const Profile: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>
           Log in with Spotify
         </a>
       </div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../config/env";
 import "./PlaylistPage.css"; // Import regular CSS instead of module
 
 interface Song {
@@ -67,7 +68,7 @@ const PlaylistPage: React.FC = () => {
 
   const handlePlayTrack = async (trackId: string) => {
     try {
-      const response = await axios.get("http://localhost:8000/api/go/mediaplayer", {
+      const response = await axios.get(`${BACKEND_URL}/api/go/mediaplayer`, {
         params: { track_id: trackId, session: sessionKey },
       });
       const redirectUrl = response.data.redirect_url;
@@ -83,7 +84,7 @@ const PlaylistPage: React.FC = () => {
 
   const handlePlayPlaylist = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/go/mediaplayer/", {
+      const response = await axios.get(`${BACKEND_URL}/api/go/mediaplayer/`, {
         params: { playlist_id: playlistId, session: sessionKey },
       });
       const redirectUrl = response.data.redirect_url;
@@ -117,7 +118,7 @@ const PlaylistPage: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get<Playlist>(
-          `http://localhost:8000/api/spotify/playlist/`,
+          `${BACKEND_URL}/api/spotify/playlist/`,
           { params: { session: sessionKey, playlist_id: playlistId } }
         );
         setPlaylist(response.data);
@@ -138,7 +139,7 @@ const PlaylistPage: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">Log in with Spotify</a>
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>Log in with Spotify</a>
       </div>
     );
 

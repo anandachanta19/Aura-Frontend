@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  FaHeart, FaList, FaPause, FaPlay,
-  FaRandom,
-  FaRegHeart,
-  FaStepBackward, FaStepForward, FaVolumeMute, FaVolumeUp
+    FaHeart, FaList, FaPause, FaPlay,
+    FaRandom,
+    FaRegHeart,
+    FaStepBackward, FaStepForward, FaVolumeMute, FaVolumeUp
 } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
+import { BACKEND_URL } from "../config/env";
 import './MediaPlayer.css';
 
 // Debounce utility function to prevent excessive API calls
@@ -145,7 +146,7 @@ function MediaPlayer() {
   const fetchPlaylistData = useCallback(async (playlistId: string) => {
     try {
       setError(null);
-      const response = await axios.get("http://localhost:8000/api/spotify/playlist/", {
+      const response = await axios.get(`${BACKEND_URL}/api/spotify/playlist/`, {
         params: { session: sessionKey, playlist_id: playlistId },
       });
       const playlistTracks: Track[] = response.data.songs || [];
@@ -166,7 +167,7 @@ function MediaPlayer() {
       console.error("Failed to fetch playlist data:", err);
       setError("Failed to load playlist. Please try again.");
     }
-  }, [sessionKey, spotifyState]);
+  }, [sessionKey]);
 
   // ---------------------------
   // Fetch lyrics once when track changes

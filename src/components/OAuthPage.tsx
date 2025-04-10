@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../config/env";
 import "./OAuthPage.css";
 import { WavyBackground } from "./ui/wavy-background";
 
@@ -6,7 +7,7 @@ const OAuthPage = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/hello/")
+    fetch(`${BACKEND_URL}/api/hello/`)
       .then((res) => res.json())
       .then((data) => {
         setMessage(data.message);
@@ -20,7 +21,7 @@ const OAuthPage = () => {
 
   const handleSpotifyLogin = () => {
     // Redirect directly to the backend login endpoint
-    window.location.href = "http://localhost:8000/api/spotify/login/";
+    window.location.href = `${BACKEND_URL}/api/spotify/login/`;
   };
   return (
     <WavyBackground className="relative w-full h-screen flex items-center justify-center">

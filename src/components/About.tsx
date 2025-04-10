@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Aurora from "./ui/Aurora/Aurora";
+import { BACKEND_URL } from "../config/env";
 import "./About.css";
+import Aurora from "./ui/Aurora/Aurora";
 
 const About: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const About: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>
           Log in with Spotify
         </a>
       </div>

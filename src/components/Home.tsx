@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../config/env";
 import "./Home.css";
 import Aurora from "./ui/Aurora/Aurora";
 
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
   const handleNavigation = async (endpoint: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/${endpoint}?session=${sessionKey}`,
+        `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`,
         {
           credentials: "include",
         },
@@ -42,7 +43,7 @@ const Home: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>
           Log in with Spotify
         </a>
       </div>

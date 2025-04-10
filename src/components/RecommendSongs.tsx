@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../config/env";
 import "./RecommendSongs.css";
 import Aurora from "./ui/Aurora/Aurora";
 
@@ -108,7 +109,7 @@ const RecommendSongs: React.FC = () => {
 
     try {
       const trackIds = songs.map(song => song.track_id);
-      const response = await axios.post("http://localhost:8000/api/spotify/create-playlist/", {
+      const response = await axios.post(`${BACKEND_URL}/api/spotify/create-playlist/`, {
         name: playlistName,
         track_ids: trackIds,
         is_mood_changer: isMoodChanger, // Pass this flag to the backend

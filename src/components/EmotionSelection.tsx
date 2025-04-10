@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from "react-router-dom";
 import Aurora from "../components/ui/Aurora/Aurora";
+import { BACKEND_URL } from "../config/env";
 import './EmotionSelection.css';
 // Import React Icons
 import { FaRegAngry, FaRegSadTear, FaRegSmile, FaRegSurprise } from 'react-icons/fa';
@@ -75,7 +76,7 @@ const EmotionSelection: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">Log in with Spotify</a>
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>Log in with Spotify</a>
       </div>
     );
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { FaFolderOpen, FaPlay } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../config/env";
 import "./Library.css";
 import Aurora from "./ui/Aurora/Aurora";
 
@@ -38,7 +39,7 @@ const Library: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:8000/api/spotify/library/",
+          `${BACKEND_URL}/api/spotify/library/`,
           { params: { session: sessionKey } }
         );
         setRecentTracks(response.data.recently_played || []);
@@ -69,7 +70,7 @@ const Library: React.FC = () => {
   // Handler for playing a track
   const handlePlayTrack = async (trackId: string) => {
     try {
-      const response = await axios.get("http://localhost:8000/api/go/mediaplayer/", {
+      const response = await axios.get(`${BACKEND_URL}/api/go/mediaplayer/`, {
         params: { track_id: trackId, session: sessionKey },
       });
       const redirectUrl = response.data.redirect_url;
@@ -86,7 +87,7 @@ const Library: React.FC = () => {
   // Handler for opening a playlist (unchanged)
   const handleOpenPlaylist = async (playlistId: string) => {
     try {
-      const response = await axios.get("http://localhost:8000/api/go/playlist/", {
+      const response = await axios.get(`${BACKEND_URL}/api/go/playlist/`, {
         params: { playlist_id: playlistId, session: sessionKey },
       });
       const redirectUrl = response.data.redirect_url;
@@ -104,7 +105,7 @@ const Library: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>
           Log in with Spotify
         </a>
       </div>
