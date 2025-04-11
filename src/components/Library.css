@@ -34,10 +34,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
     margin-bottom: 20px;
-    padding: 20px 0;
+    padding: 1.5rem;
     background-color: transparent;
 }
 
@@ -55,8 +54,8 @@ body {
 }
 
 .section {
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    padding: 1.5rem;
     margin-bottom: 40px;
     background-color: transparent;
 }
@@ -64,13 +63,13 @@ body {
 .section h3 {
     font-size: 2rem;
     margin-bottom: 20px;
-    text-transform: uppercase;
+    text-align: -webkit-center;
 }
 
-.grid-container {
+.library-container .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 2px;
+    gap: 1.5rem;
     width: 100%;
 }
 
@@ -169,4 +168,106 @@ body {
 .error a {
     color: white;
     text-decoration: underline;
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 768px) {
+    .library-title {
+        font-size: 1.2rem;
+    }
+
+    .section h3 {
+        font-size: 1.5rem;
+    }
+
+    .library-container .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .track-card,
+    .playlist-card {
+        width: 100%;
+        max-width: 160px;
+        margin: 0 auto;
+    }
+
+    .image-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+    }
+
+    .play-button,
+    .open-button {
+        font-size: 1.5rem;
+    }
+
+    .track-name,
+    .playlist-name {
+        font-size: 0.75rem;
+    }
+
+    .track-artist {
+        font-size: 0.8rem;
+    }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 480px) {
+    body {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .library-container {
+        padding-bottom: 20px;
+    }
+
+    .library-container .header {
+        padding: 15px 0;
+        width: 95%;
+    }
+
+    .library-title {
+        font-size: 1.1rem;
+    }
+
+    .section {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 30px;
+    }
+
+    .section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .library-container .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
+        padding: 0.2rem;
+    }
+
+    .track-name,
+    .playlist-name {
+        font-size: 0.8rem;
+    }
+
+    .track-artist {
+        font-size: 0.7rem;
+    }
+
+    /* Ensure play/open buttons are visible on touch devices without hover */
+    .track-image:active,
+    .playlist-image:active {
+        filter: brightness(30%);
+    }
+
+    .loading,
+    .error {
+        font-size: 1rem;
+    }
 }

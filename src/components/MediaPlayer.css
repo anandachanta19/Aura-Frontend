@@ -23,11 +23,10 @@
 
 .player-container {
   display: flex;
-  flex-direction: row; /* Lyrics on the right */
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  max-width: 1200px; /* Adjusted for design */
-  height: auto;
+  max-width: 1200px;
   padding: 2rem;
   transition: all 0.5s ease;
   overflow: hidden;
@@ -215,16 +214,17 @@
 
 .volume-slider-wrapper {
   position: absolute;
-  bottom: 60px;
-  right: 20px;
-  background-color: #000;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 10px;
-  border-radius: 5px;
+  bottom: 100px; /* Adjusted for better positioning */
+  right: 30px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 8px;
+  border-radius: 8px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 10;
+  transform: translateX(-50%); /* Center relative to volume icon */
 }
 
 .volume-slider-wrapper.visible {
@@ -238,9 +238,29 @@
   writing-mode: bt-lr;
   width: 5px;
   height: 80px;
-  background: rgba(255, 255, 255, 0.2);
+  background: white; /* Changed to white for better visibility */
   outline: none;
   border-radius: 2px;
+}
+
+/* Custom styling for the volume slider thumb */
+.volume-slider.vertical::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.volume-slider.vertical::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
 }
 
 .queue-overlay {
@@ -329,9 +349,6 @@
 }
 
 @media (max-width: 768px) {
-  .App {
-    overflow-y: scroll;
-  }
 
   .player-container {
     flex-direction: column; 
@@ -342,5 +359,73 @@
     margin-left: 0;
     margin-top: 2rem; 
     width: 100%; 
+  }
+  
+  /* Font and image size adjustments for tablet */
+  .album-art {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .track-title {
+    font-size: 1.5rem;
+  }
+  
+  .track-artist {
+    font-size: 1rem;
+  }
+  
+  .lyrics-container pre {
+    font-size: 1.1rem;
+  }
+}
+
+/* Small screen adjustments */
+@media (max-width: 480px) {
+  /* Font and image size adjustments for mobile */
+  .album-art {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .track-title {
+    font-size: 1.2rem;
+  }
+  
+  .player-container{
+    padding: 0.8rem;
+  }
+
+  .track-artist {
+    font-size: 0.9rem;
+  }
+  
+  .lyrics-container pre {
+    font-size: 1rem;
+  }
+  
+  .queue-album-art {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .queue-track-title {
+    font-size: 0.85rem;
+  }
+  
+  .queue-track-artist {
+    font-size: 0.75rem;
+  }
+  
+  .queue-overlay h2 {
+    font-size: 1.3rem;
+  }
+
+  .player-container .controls-wrapper{
+    width: 350px;
+  }
+
+  .progress-bar {
+    width: 250px;
   }
 }

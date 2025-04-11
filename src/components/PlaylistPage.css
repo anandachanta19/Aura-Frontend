@@ -16,6 +16,7 @@
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  height: 100vh;
   z-index: 1;
   padding: 30px;
   color: #ffffff;
@@ -207,6 +208,21 @@
   font-size: 0.9rem;
 }
 
+/* Text overflow handling with ellipsis */
+.song-info .title,
+.song-info .artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Desktop default max width */
+}
+
+/* Column visibility classes - these might need adjustment based on your HTML structure */
+.album-column, .date-added-column, .duration-column {
+  /* Default visible */
+  display: table-cell;
+}
+
 /* Playback Bar */
 .playback-bar {
   position: fixed;
@@ -225,16 +241,96 @@ button {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .main-content {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .song-list tr {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #ffffff;
+    transition: background-color 0.3s ease;
+  }
+  
+
   .header {
     flex-direction: column;
     align-items: flex-start;
+    padding: 20px 0;
   }
 
   .header .playlist-artwork {
+    width: 150px;
+    height: 150px;
     margin-bottom: 20px;
   }
 
+  .header .playlist-info h1 {
+    font-size: 2.5rem;
+  }
+
+  .playlist-controls {
+    flex-wrap: wrap;
+  }
+
+  .control-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
   .song-list td {
+    padding: 10px;
     font-size: 0.8rem;
+  }
+  
+  /* Reduce padding between row number and song info */
+  .song-list td:first-child {
+    padding-right: 3px;
+  }
+
+  .song-info .title,
+  .song-info .artist {
+    max-width: 400px; /* Mobile max width */
+  }
+
+  .song-image-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .playlist-back-button {
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    padding: 8px 15px;
+  }
+
+  /* Hide non-essential columns on mobile */
+  .album-column, .date-added-column, .duration-column {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header .playlist-info h1 {
+    font-size: 2rem;
+  }
+
+  .song-info .title,
+  .song-info .artist {
+    max-width: 170px; /* Allow text to use full available width */
+  }
+
+  .song-list table {
+    table-layout: fixed;
+  }
+
+  .control-button {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
   }
 }

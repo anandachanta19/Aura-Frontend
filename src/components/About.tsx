@@ -34,32 +34,34 @@ const About: React.FC = () => {
   return (
     <div className="about-page">
       <Aurora />
+      
+      <div className="about-container">
+        <div className="about-nav">
+          <h2 className="library-title">About</h2>
+          <h2 className="library-title" onClick={() => navigate(-1)}>
+            Back
+          </h2>
+        </div>
 
-      <div className="about-nav">
-        <h2 className="library-title">About</h2>
-        <h2 className="library-title" onClick={() => navigate(-1)}>
-          Back
-        </h2>
-      </div>
-
-      <div className="about-content">
-        <h2>Emotion Based Music Player</h2>
-        <p>
-          The Emotion Based Music Player is a project designed to blend the
-          power of music with the spectrum of human emotions. By analyzing your
-          mood, the player curates tracks that resonate with your current
-          feelings—creating a personalized and immersive audio experience.
-        </p>
-        <p>
-          Using modern technologies like React for the UI and django for server
-          logic, the player not only sounds good but also looks stunning. The
-          dynamic aurora background enhances the visual appeal and reflects the
-          ever-changing nature of emotion.
-        </p>
-        <p>
-          Explore the project, enjoy the seamless fusion of art and technology,
-          and let the music speak to your emotions.
-        </p>
+        <div className="about-content">
+          <h2>Emotion Based Music Player</h2>
+          <p>
+            The Emotion Based Music Player is a project designed to blend the
+            power of music with the spectrum of human emotions. By analyzing your
+            mood, the player curates tracks that resonate with your current
+            feelings—creating a personalized and immersive audio experience.
+          </p>
+          <p>
+            Using modern technologies like React for the UI and django for server
+            logic, the player not only sounds good but also looks stunning. The
+            dynamic aurora background enhances the visual appeal and reflects the
+            ever-changing nature of emotion.
+          </p>
+          <p>
+            Explore the project, enjoy the seamless fusion of art and technology,
+            and let the music speak to your emotions.
+          </p>
+        </div>
       </div>
     </div>
   );

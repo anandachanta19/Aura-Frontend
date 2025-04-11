@@ -41,6 +41,9 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  width: 100%;
+  aspect-ratio: 1/1; /* Make images square for consistency */
+  overflow: hidden;
 }
 
 .song-image {
@@ -125,16 +128,22 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  padding: 1.5rem;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   z-index: 2; /* Ensure it stays above the Aurora background */
+  box-sizing: border-box;
 }
 
 .track-card {
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .track-info {
@@ -169,31 +178,57 @@
 .about-nav {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 1rem;
   z-index: 10;
   position: relative;
 }
 
 @media (max-width: 768px) {
   .select_title, .select-title {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .statement {
     font-size: 1.2rem;
   }
 
-  .track-card {
-    width: 150px;
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    padding: 0.7rem;
+    gap: 1rem;
   }
 
-  .grid-container {
-    gap: 15px;
+  .track-card {
+    width: 100%;
+  }
+
+  .track-name {
+    font-size: 0.9rem;
+  }
+  
+  .track-artist {
+    font-size: 0.8rem;
   }
 
   .action-buttons {
     flex-direction: column;
     gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));;
+    padding: 0.3rem;
+    gap: 0.8rem;
+  }
+  
+  .track-name {
+    font-size: 0.8rem;
+  }
+  
+  .track-artist {
+    font-size: 0.7rem;
   }
 }
 
