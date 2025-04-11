@@ -47,7 +47,7 @@ body {
 
 .navbar-right {
     display: flex;
-    gap: 20px;
+    gap: 30px; /* Increased from 20px for better spacing */
 }
 
 .navbar-right a {
@@ -86,6 +86,7 @@ body {
     font-size: 18px;
     font-weight: bold;
     transition: color 0.3s ease-in-out;
+    padding: 8px 12px; /* Add padding around buttons for better spacing */
 }
 
 .navbar-right button:hover {
@@ -146,4 +147,151 @@ body {
     padding: 10px;
     border-radius: 20px 20px 0 0;
     box-shadow: 0 -2px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Menu Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Hamburger Menu Icon */
+.mobile-menu-icon {
+  display: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.hamburger {
+  width: 30px;
+  height: 24px;
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 3px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+.hamburger span:nth-child(1) {
+  top: 0px;
+}
+
+.hamburger span:nth-child(2) {
+  top: 10px;
+}
+
+.hamburger span:nth-child(3) {
+  top: 20px;
+}
+
+.hamburger.open span:nth-child(1) {
+  top: 10px;
+  transform: rotate(135deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  left: -60px;
+}
+
+.hamburger.open span:nth-child(3) {
+  top: 10px;
+  transform: rotate(-135deg);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 70%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  z-index: 99;
+  transition: right 0.3s ease;
+  display: none;
+}
+
+.mobile-menu-overlay.open {
+  right: 0;
+}
+
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  padding: 80px 20px 20px;
+  height: 100%;
+}
+
+.menu-item {
+  color: white;
+  padding: 15px 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.menu-item:hover {
+  color: #a8a8a8;
+}
+
+.menu-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 5px 0;
+}
+
+/* Close button for mobile menu */
+.mobile-menu-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-close:hover {
+  color: #a8a8a8;
+}
+
+/* Responsive breakpoint */
+@media (max-width: 768px) {
+  .desktop-menu {
+    display: none;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+    z-index: 102;
+  }
+
+  .mobile-menu-overlay {
+    display: block;
+  }
+}
+
+/* Additional desktop styles for better spacing */
+@media (min-width: 1024px) {
+  .desktop-menu {
+    gap: 40px; /* Even more spacing on larger screens */
+  }
 }

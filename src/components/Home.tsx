@@ -7,6 +7,7 @@ import Aurora from "./ui/Aurora/Aurora";
 const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const sessionKey = searchParams.get("session");
 
@@ -16,49 +17,30 @@ const Home: React.FC = () => {
       setLoading(false);
       return;
     }
-    
-    // Log session key for debugging
-    console.log("Session key:", sessionKey);
-    console.log("Backend URL being used:", BACKEND_URL);
-    
-    // Validate backend URL
-    if (!BACKEND_URL || BACKEND_URL === "") {
-      setError("Backend URL is not configured properly.");
-      setLoading(false);
-      return;
-    }
-    
     setLoading(false);
   }, [sessionKey]);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   const handleNavigation = async (endpoint: string) => {
     try {
-      const url = `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`;
-      console.log("Navigating to:", url);
-      
-      const response = await fetch(url, {
-        credentials: "include",
-      });
-      
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.error("404 error: Endpoint not found:", url);
-          setError(`The requested resource (${endpoint}) was not found. This could indicate an issue with the API endpoint.`);
-          return;
-        }
-        throw new Error(`HTTP error: ${response.status}`);
-      }
-      
+      setMenuOpen(false); // Close menu after navigation
+      const response = await fetch(
+        `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`,
+        {
+          credentials: "include",
+        },
+      );
       const data = await response.json();
       if (data.redirect_url) {
-        console.log("Redirecting to:", data.redirect_url);
         window.location.href = data.redirect_url;
       } else {
         setError(data.error || "Failed to navigate.");
       }
     } catch (err) {
-      console.error("Navigation error:", err);
-      setError(`An error occurred while navigating: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      setError("An error occurred while navigating.");
     }
   };
 
@@ -81,18 +63,50 @@ const Home: React.FC = () => {
           <h1>Aura</h1>
         </div>
         <div className="navbar-right">
-          <button onClick={() => handleNavigation("go/profile")}>
-            Profile
-          </button>
-          <button onClick={() => handleNavigation("go/library")}>
-            Library
-          </button>
-          <button onClick={() => handleNavigation("go/about")}>About</button>
-          <button onClick={() => handleNavigation("spotify/logout")}>
-            Logout
-          </button>
+          <div className="desktop-menu">
+            <button onClick={() => handleNavigation("go/profile")}>
+              Profile
+            </button>
+            <button onClick={() => handleNavigation("go/library")}>
+              Library
+            </button>
+            <button onClick={() => handleNavigation("go/about")}>About</button>
+            <button onClick={() => handleNavigation("spotify/logout")}>
+              Logout
+            </button>
+          </div>
+          <div className="mobile-menu-icon" onClick={toggleMenu}>
+            <div className={`hamburger ${menuOpen ? 'open' : ''}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${menuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-close" onClick={toggleMenu}>×</div>
+        <div className="mobile-menu-content">
+          <div className="menu-item" onClick={() => handleNavigation("go/profile")}>
+            Profile
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("go/library")}>
+            Library
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("go/about")}>
+            About
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("spotify/logout")}>
+            Logout
+          </div>
+        </div>
+      </div>
+
       <div className="recommendation">
         <p>Wanna get recommendations based on your current emotion?</p>
         <h2>CHOOSE AN OPTION</h2>
