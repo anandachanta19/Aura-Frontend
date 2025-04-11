@@ -40,19 +40,19 @@ body {
 }
 
 .navbar-left h1 {
-    font-size: 24px;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
     font-weight: bold;
     margin: 0;
 }
 
 .navbar-right {
     display: flex;
-    gap: 30px; /* Increased from 20px for better spacing */
+    gap: 30px;
 }
 
 .navbar-right a {
     text-decoration: none;
-    font-size: 18px;
+    font-size: clamp(0.9rem, 2vw, 1.125rem);
     font-weight: bold;
     transition: color 0.3s ease-in-out;
 }
@@ -70,7 +70,7 @@ body {
     width: 100vw;
     text-align: center;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     background: transparent;
     position: absolute;
     top: 50%;
@@ -83,7 +83,7 @@ body {
     text-decoration: none;
     border: none;
     background: none;
-    font-size: 18px;
+    font-size: clamp(0.9rem, 2vw, 1.125rem);
     font-weight: bold;
     transition: color 0.3s ease-in-out;
     padding: 8px 12px; /* Add padding around buttons for better spacing */
@@ -94,13 +94,13 @@ body {
 }
 
 .recommendation p {
-    font-size: 20px;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .recommendation h2 {
-    font-size: 36px;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
     margin-bottom: 20px;
 }
 
@@ -116,7 +116,7 @@ body {
     border: 1px solid white;
     background: none;
     cursor: pointer;
-    font-size: 18px;
+    font-size: clamp(0.9rem, 2vw, 1.125rem);
     font-weight: bold;
     border-radius: 25px;
     transition: 0.3s ease-in-out;
@@ -130,7 +130,7 @@ body {
 
 .note {
     margin-top: 10px;
-    font-size: 14px;
+    font-size: clamp(0.7rem, 1.5vw, 0.875rem);
     color: white;
 }
 
@@ -243,7 +243,7 @@ body {
 .menu-item {
   color: white;
   padding: 15px 0;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -294,4 +294,21 @@ body {
   .desktop-menu {
     gap: 40px; /* Even more spacing on larger screens */
   }
+}
+
+/* Additional responsive font styles */
+@media (max-width: 480px) {
+    .recommendation h2 {
+        font-size: clamp(1.2rem, 6vw, 1.8rem);
+    }
+    
+    .recommendation p {
+        font-size: clamp(0.8rem, 4vw, 1rem);
+    }
+    
+    .capture-button,
+    .select-button {
+        font-size: 0.9rem;
+        padding: 12px 16px;
+    }
 }
