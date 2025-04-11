@@ -187,9 +187,9 @@ const PlaylistPage: React.FC = () => {
                       </div>
                     </div>
                   </td>
-                  <td>{song.album}</td>
-                  <td>{formatDate(song.dateAdded)}</td>
-                  <td>{formatDuration(song.duration)}</td>
+                  <td className="album-column">{song.album}</td>
+                  <td className="date-added-column">{formatDate(song.dateAdded)}</td>
+                  <td className="duration-column">{formatDuration(song.duration)}</td>
                 </tr>
               ))}
             </tbody>

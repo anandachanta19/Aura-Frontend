@@ -80,3 +80,71 @@ html {
 .spotify-button:hover {
     transform: scale(1.05);
 }
+
+/* Mobile Responsiveness */
+/* Large screens (Desktops) */
+@media screen and (max-width: 1200px) {
+    .aura-title {
+        font-size: 5rem;
+    }
+}
+
+/* Medium screens (Tablets) */
+@media screen and (max-width: 768px) {
+    .aura-title {
+        font-size: 4rem;
+    }
+    
+    .welcome-text {
+        font-size: 1.1rem;
+    }
+    
+    .aura-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .spotify-button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Small screens (Mobile phones) */
+@media screen and (max-width: 480px) {
+    .aura-page {
+        padding: 0 15px;
+    }
+    
+    .aura-title {
+        font-size: 3.5rem;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+    }
+    
+    .aura-subtitle {
+        font-size: 1rem;
+    }
+    
+    .spotify-button {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 320px) {
+    .aura-title {
+        font-size: 2.5rem;
+    }
+    
+    .welcome-text, .aura-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .spotify-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
