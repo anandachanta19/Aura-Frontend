@@ -7,6 +7,7 @@ import Aurora from "./ui/Aurora/Aurora";
 const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const sessionKey = searchParams.get("session");
 
@@ -19,8 +20,13 @@ const Home: React.FC = () => {
     setLoading(false);
   }, [sessionKey]);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   const handleNavigation = async (endpoint: string) => {
     try {
+      setMenuOpen(false); // Close menu after navigation
       const response = await fetch(
         `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`,
         {
@@ -57,18 +63,50 @@ const Home: React.FC = () => {
           <h1>Aura</h1>
         </div>
         <div className="navbar-right">
-          <button onClick={() => handleNavigation("go/profile")}>
-            Profile
-          </button>
-          <button onClick={() => handleNavigation("go/library")}>
-            Library
-          </button>
-          <button onClick={() => handleNavigation("go/about")}>About</button>
-          <button onClick={() => handleNavigation("spotify/logout")}>
-            Logout
-          </button>
+          <div className="desktop-menu">
+            <button onClick={() => handleNavigation("go/profile")}>
+              Profile
+            </button>
+            <button onClick={() => handleNavigation("go/library")}>
+              Library
+            </button>
+            <button onClick={() => handleNavigation("go/about")}>About</button>
+            <button onClick={() => handleNavigation("spotify/logout")}>
+              Logout
+            </button>
+          </div>
+          <div className="mobile-menu-icon" onClick={toggleMenu}>
+            <div className={`hamburger ${menuOpen ? 'open' : ''}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${menuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-close" onClick={toggleMenu}>×</div>
+        <div className="mobile-menu-content">
+          <div className="menu-item" onClick={() => handleNavigation("go/profile")}>
+            Profile
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("go/library")}>
+            Library
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("go/about")}>
+            About
+          </div>
+          <div className="menu-divider"></div>
+          <div className="menu-item" onClick={() => handleNavigation("spotify/logout")}>
+            Logout
+          </div>
+        </div>
+      </div>
+
       <div className="recommendation">
         <p>Wanna get recommendations based on your current emotion?</p>
         <h2>CHOOSE AN OPTION</h2>
