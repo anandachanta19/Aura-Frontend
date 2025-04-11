@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Webcam from "react-webcam";
+import { BACKEND_URL } from "../config/env";
 import "./DetectEmotion.css";
 import Aurora from "./ui/Aurora/Aurora";
 
@@ -53,7 +54,7 @@ const DetectEmotion: React.FC = () => {
     if (!imageSrc || !sessionKey) return; // Ensure sessionKey is available
 
     try {
-      const response = await axios.post("http://localhost:8000/api/detect/emotion/", {
+      const response = await axios.post(`${BACKEND_URL}/api/detect/emotion/`, {
         image: imageSrc,
       }, {
         params: { session: sessionKey }, // Pass session key as a query parameter
@@ -96,7 +97,7 @@ const DetectEmotion: React.FC = () => {
         setIsDetecting(false);
   
         try {
-          const response = await axios.post("http://localhost:8000/api/get/dominant/emotion/", {
+          const response = await axios.post(`${BACKEND_URL}/api/get/dominant/emotion/`, {
             emotion_count: emotionCount.current,
           }, {
             params: { session: sessionKey }, // Pass session key as a query parameter
@@ -135,7 +136,7 @@ const DetectEmotion: React.FC = () => {
 
   const handleRecommendSongs = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/go/recommend/songs/", {
+      const response = await axios.post(`${BACKEND_URL}/api/go/recommend/songs/`, {
         emotion: detectedEmotion,
         genres: selectedGenres,
       }, {
@@ -157,7 +158,7 @@ const DetectEmotion: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">Log in with Spotify</a>
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>Log in with Spotify</a>
       </div>
     );
 

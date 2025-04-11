@@ -52,7 +52,7 @@ const EmotionSelection: React.FC = () => {
 
   const handleRecommendSongs = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/go/recommend/songs/", {
+      const response = await axios.post(`${BACKEND_URL}/api/go/recommend/songs/`, {
         emotion: selectedEmotion,
         genres: selectedGenres,
       }, {
