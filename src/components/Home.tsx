@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BACKEND_URL } from "../config/env";
 import "./Home.css";
-// Import Aurora component with error handling
 import Aurora from "./ui/Aurora/Aurora";
 
 const Home: React.FC = () => {
@@ -10,36 +9,56 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParams] = useSearchParams();
   const sessionKey = searchParams.get("session");
-  const [auroraError, setAuroraError] = useState<boolean>(false);
 
   useEffect(() => {
-    // Log the backend URL to debug in production
-    console.log("Current BACKEND_URL:", BACKEND_URL);
-    
     if (!sessionKey) {
       setError("Session key is missing. Please log in again.");
       setLoading(false);
       return;
     }
+    
+    // Log session key for debugging
+    console.log("Session key:", sessionKey);
+    console.log("Backend URL being used:", BACKEND_URL);
+    
+    // Validate backend URL
+    if (!BACKEND_URL || BACKEND_URL === "") {
+      setError("Backend URL is not configured properly.");
+      setLoading(false);
+      return;
+    }
+    
     setLoading(false);
   }, [sessionKey]);
 
   const handleNavigation = async (endpoint: string) => {
     try {
-      const response = await fetch(
-        `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`,
-        {
-          credentials: "include",
-        },
-      );
+      const url = `${BACKEND_URL}/api/${endpoint}?session=${sessionKey}`;
+      console.log("Navigating to:", url);
+      
+      const response = await fetch(url, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.error("404 error: Endpoint not found:", url);
+          setError(`The requested resource (${endpoint}) was not found. This could indicate an issue with the API endpoint.`);
+          return;
+        }
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      
       const data = await response.json();
       if (data.redirect_url) {
+        console.log("Redirecting to:", data.redirect_url);
         window.location.href = data.redirect_url;
       } else {
         setError(data.error || "Failed to navigate.");
       }
     } catch (err) {
-      setError("An error occurred while navigating.");
+      console.error("Navigation error:", err);
+      setError(`An error occurred while navigating: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 
@@ -56,14 +75,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container">
-      {!auroraError ? 
-        <React.Suspense fallback={<div>Loading Aurora...</div>}>
-          <ErrorBoundary onError={() => setAuroraError(true)}>
-            <Aurora />
-          </ErrorBoundary>
-        </React.Suspense> : 
-        <div className="aurora-fallback"></div>
-      }
+      <Aurora />
       <nav className="navbar">
         <div className="navbar-left">
           <h1>Aura</h1>
@@ -93,26 +105,5 @@ const Home: React.FC = () => {
     </div>
   );
 };
-
-// Error Boundary Component for handling runtime errors
-class ErrorBoundary extends React.Component<{children: React.ReactNode, onError: () => void}> {
-  state = { hasError: false };
-  
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  
-  componentDidCatch(error: Error) {
-    console.error("Component error:", error);
-    this.props.onError();
-  }
-  
-  render() {
-    if (this.state.hasError) {
-      return null;
-    }
-    return this.props.children;
-  }
-}
 
 export default Home;
