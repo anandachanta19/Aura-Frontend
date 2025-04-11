@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BACKEND_URL } from "../config/env";
 import "./Home.css";
+// Import Aurora component with error handling
 import Aurora from "./ui/Aurora/Aurora";
 
 const Home: React.FC = () => {
@@ -9,8 +10,12 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParams] = useSearchParams();
   const sessionKey = searchParams.get("session");
+  const [auroraError, setAuroraError] = useState<boolean>(false);
 
   useEffect(() => {
+    // Log the backend URL to debug in production
+    console.log("Current BACKEND_URL:", BACKEND_URL);
+    
     if (!sessionKey) {
       setError("Session key is missing. Please log in again.");
       setLoading(false);
@@ -51,7 +56,14 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container">
-      <Aurora />
+      {!auroraError ? 
+        <React.Suspense fallback={<div>Loading Aurora...</div>}>
+          <ErrorBoundary onError={() => setAuroraError(true)}>
+            <Aurora />
+          </ErrorBoundary>
+        </React.Suspense> : 
+        <div className="aurora-fallback"></div>
+      }
       <nav className="navbar">
         <div className="navbar-left">
           <h1>Aura</h1>
@@ -81,5 +93,26 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+// Error Boundary Component for handling runtime errors
+class ErrorBoundary extends React.Component<{children: React.ReactNode, onError: () => void}> {
+  state = { hasError: false };
+  
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  
+  componentDidCatch(error: Error) {
+    console.error("Component error:", error);
+    this.props.onError();
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return null;
+    }
+    return this.props.children;
+  }
+}
 
 export default Home;
