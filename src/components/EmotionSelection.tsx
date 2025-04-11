@@ -52,7 +52,7 @@ const EmotionSelection: React.FC = () => {
 
   const handleRecommendSongs = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/go/recommend/songs/", {
+      const response = await axios.post(`${BACKEND_URL}/api/go/recommend/songs/`, {
         emotion: selectedEmotion,
         genres: selectedGenres,
       }, {
@@ -61,11 +61,14 @@ const EmotionSelection: React.FC = () => {
       const data = response.data;
       if (data.redirect_url) {
         window.location.href = `${data.redirect_url}&emotion=${encodeURIComponent(selectedEmotion || '')}&genres=${encodeURIComponent(selectedGenres.join(','))}`;
+      } else if (data.recommendations) {
+        setRecommendations(data.recommendations);
       } else {
         setError(data.error || "Failed to navigate.");
       }
     } catch (error) {
       console.error("Error navigating to Recommend Songs:", error);
+      setError("Failed to get recommendations. Please try again.");
     }
   };
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    FaHeart, FaList, FaPause, FaPlay,
-    FaRandom,
-    FaRegHeart,
-    FaStepBackward, FaStepForward, FaVolumeMute, FaVolumeUp
+  FaHeart, FaList, FaPause, FaPlay,
+  FaRandom,
+  FaRegHeart,
+  FaStepBackward, FaStepForward, FaVolumeMute, FaVolumeUp
 } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 import { BACKEND_URL } from "../config/env";
@@ -121,7 +121,7 @@ function MediaPlayer() {
   const fetchTrackData = useCallback(async (trackId: string) => {
     try {
       setError(null);
-      const response = await axios.get("http://localhost:8000/api/spotify/track/", {
+      const response = await axios.get(`${BACKEND_URL}/api/spotify/track/`, {
         params: { session: sessionKey, track_id: trackId },
       });
       const track = response.data;
@@ -186,7 +186,7 @@ function MediaPlayer() {
 
       setIsFetchingLyrics(true);
       try {
-        const response = await axios.get("http://localhost:8000/api/spotify/lyrics/", {
+        const response = await axios.get(`${BACKEND_URL}/api/spotify/lyrics/`, {
           params: {
             session: sessionKey,
             song_title: title,

@@ -61,7 +61,7 @@ const RecommendSongs: React.FC = () => {
       sessionStorage.setItem('recommendedEmotion', emotion);
       sessionStorage.setItem('recommendedGenres', urlParams.get("genres") || "");
 
-      const response = await axios.post("http://localhost:8000/api/recommend/songs/", {
+      const response = await axios.post(`${BACKEND_URL}/api/recommend/songs/`, {
         emotion,
         genres,
       }, {
@@ -155,7 +155,7 @@ const RecommendSongs: React.FC = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        <a href="http://localhost:8000/api/spotify/login/">Log in with Spotify</a>
+        <a href={`${BACKEND_URL}/api/spotify/login/`}>Log in with Spotify</a>
       </div>
     );
 
