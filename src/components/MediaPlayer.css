@@ -9,7 +9,7 @@
   font-family: 'Poppins', sans-serif;
   position: relative;
   overflow: hidden;
-  overflow-y: hidden; /* Prevent scroll in normal view */
+  overflow-y: hidden;
 }
 
 .blur-overlay {
@@ -29,8 +29,10 @@
   max-width: 1200px;
   padding: 2rem;
   transition: all 0.5s ease;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto; /* Allow vertical scrolling */
   z-index: 1;
+  max-height: 100vh; /* Limit height to viewport height */
 }
 
 .controls-wrapper {
@@ -349,10 +351,10 @@
 }
 
 @media (max-width: 768px) {
-
   .player-container {
     flex-direction: column; 
     align-items: center;
+    margin: 2rem; /* Add margin for tablets */
   }
 
   .lyrics-container {
@@ -363,8 +365,8 @@
   
   /* Font and image size adjustments for tablet */
   .album-art {
-    width: 240px;
-    height: 240px;
+    width: 280px;
+    height: 280px;
   }
   
   .track-title {
@@ -384,16 +386,17 @@
 @media (max-width: 480px) {
   /* Font and image size adjustments for mobile */
   .album-art {
-    width: 180px;
-    height: 180px;
+    width: 260px;
+    height: 260px;
   }
   
   .track-title {
     font-size: 1.2rem;
   }
   
-  .player-container{
+  .player-container {
     padding: 0.8rem;
+    margin: 1rem; /* Add margin for mobile */
   }
 
   .track-artist {
